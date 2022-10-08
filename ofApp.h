@@ -85,9 +85,9 @@ class TriangleShape : public Shape {
 
 class Player : public TriangleShape {
    public:
-
+    ofImage img;
     bool headshow;
-    bool showsprite = true;
+    bool showsprite = false;
 
     //constructor for player which inherits triangle shape constructor
 
@@ -111,7 +111,7 @@ class Agent: public TriangleShape {
    public:
 
     bool headshow;
-    bool showsprite = true;
+    bool showsprite = false;
     ofColor agentColor = ofColor::darkRed; 
     //constructor for player which inherits triangle shape constructor
 
@@ -172,7 +172,9 @@ class ofApp : public ofBaseApp {
     map<int, bool> keymap;
     ofxPanel gui;
     ofxToggle toggle;
+    ofxToggle toggle2;
     ofxButton button;
     ofxButton button2;
     ofxVec3Slider vec3Slider;
+    bool bHide;
 };

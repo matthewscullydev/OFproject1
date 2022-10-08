@@ -4,16 +4,30 @@
 #include "ofEvents.h"
 
 void Player::draw() {
+    ofPushMatrix();
+    ofMultMatrix(getMatrix());
+
+    if(!showsprite){
     ofSetColor(tricolor);
     ofFill();
-    TriangleShape::draw();
+    ofDrawTriangle(verts[0], verts[1], verts[2]);
+    };
+
+    if (showsprite) {
+       this->img.load("images/ship.png"); 
+       img.draw(-img.getWidth()/2,-img.getHeight()/2);
+    };
+
+
+
+    ofPopMatrix();
+
+    //TriangleShape::draw();
     ofSetColor(ofColor::green);
     if (headshow) {
         ofDrawLine(pos, pos + heading() * scaleval * 75);
     }
-    if (showsprite) {
-    };
-}
+  }
 
 void TriangleShape::agentDraw(){
     
@@ -45,7 +59,7 @@ void TriangleShape::draw() {
 void ofApp::setup() {
     gui.setup();
 
-    gui.add(button2.setup("show sprite"));
+    gui.add(toggle2.setup("show sprite", true));
     gui.add(toggle.setup("show heading vector", false));
 
     //initializing values for (speed,scale)
@@ -61,6 +75,7 @@ void ofApp::setup() {
     //placing player on grid in middle - 100 on x and y
     tri.pos = glm::vec3(ofGetWindowWidth() / 2.0,
                         ofGetWindowHeight() / 2.0 + 200, 0);
+    bHide = false;
 }
 
 //--------------------------------------------------------------
@@ -83,12 +98,17 @@ void ofApp::update() {
         tri.pos += finalvec;
     }
 
-    if (toggle) {
+       if (toggle) {
         tri.headshow = true;
     } else {
         tri.headshow = false;
     }
 
+    if (toggle2) {
+        tri.showsprite = true;
+    } else {
+        tri.showsprite = false;
+    }
     // agentFollow(Player p);
 
 }
@@ -117,10 +137,17 @@ void ofApp::draw() {
         tri.pos.y = 0;
     }
 
-
-    gui.draw();
+    if(!bHide){
+        gui.draw();
+    }
 }
-void ofApp::keyPressed(int key) { keymap[key] = true; }
+void ofApp::keyPressed(int key) { 
+    keymap[key] = true; 
+    if(key == 'h'){
+    bHide = !bHide;
+    }
+
+}
 
 void ofApp::keyReleased(int key) {
     keymap[key] = false;
